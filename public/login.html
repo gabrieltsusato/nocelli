@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Acessar Plataforma - Nocelli Máquinas Industriais</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            condensed: ['Barlow Condensed', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              teal: '#19536e',
+              tealDark: '#133e53',
+              blueSubtle: '#eaf2f8',
+              accentOrange: '#c2410c',
+              fieldBg: '#edf3f8',
+              muted: '#64748b',
+              navyText: '#102231'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-condensed { font-family: 'Barlow Condensed', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .icon-filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+
+<body class="bg-[#f0f4f8] text-[#1e293b] min-h-screen flex flex-col justify-between antialiased selection:bg-[#19536e] selection:text-white">
+  <!-- Top Slim Branding / Header -->
+  <header class="w-full pt-8 pb-3 px-4 flex flex-col items-center justify-center">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#19536e] flex items-center justify-center shadow-sm">
+        <span class="font-condensed font-bold text-white text-2xl leading-none">N</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="font-condensed font-bold text-lg tracking-wider text-[#102231] uppercase leading-tight">Nocelli</span>
+        <span class="text-[10px] tracking-[0.16em] uppercase font-semibold text-slate-500 leading-none">Máquinas Industriais</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Central Container -->
+  <main class="w-full flex-1 flex flex-col items-center justify-center px-4 py-4 sm:py-6">
+    <div class="w-full max-w-[560px]">
+      <div class="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-200/80 p-7 sm:p-9 transition-all">
+        <!-- Header -->
+        <div class="flex items-start justify-between mb-5">
+          <div class="space-y-1">
+            <span class="font-condensed font-bold text-[13px] tracking-[0.12em] text-[#1f6081] uppercase block">
+              MÓDULO DE AUTENTICAÇÃO SEGURA
+            </span>
+            <h1 class="font-condensed font-extrabold text-[34px] sm:text-[38px] tracking-tight text-[#102231] uppercase leading-none">
+              ACESSAR PLATAFORMA
+            </h1>
+          </div>
+          <button aria-label="Configurações de Acesso" class="w-10 h-10 rounded-lg bg-[#eaf3f8] text-[#19536e] hover:bg-[#dcebf3] transition-colors flex items-center justify-center flex-shrink-0" type="button">
+            <span class="material-symbols-outlined icon-filled text-[22px]">settings_suggest</span>
+          </button>
+        </div>
+
+        <!-- Role Selector Bar -->
+        <div class="w-full bg-[#f1f6fa] rounded-lg p-1 flex items-center mb-6" id="profileSelector">
+          <button class="flex-1 py-2 px-2 rounded-md font-condensed font-bold text-[13px] tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 bg-[#19536e] text-white shadow-sm" id="tab-operador" onclick="selectRole('operador')" type="button">
+            <span class="material-symbols-outlined text-[17px]">engineering</span>
+            <span>Chão de Fábrica</span>
+          </button>
+          <button class="flex-1 py-2 px-2 rounded-md font-condensed font-bold text-[13px] tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900" id="tab-admin" onclick="selectRole('admin')" type="button">
+            <span class="material-symbols-outlined text-[17px]">admin_panel_settings</span>
+            <span>Administrador</span>
+          </button>
+          <button class="flex-1 py-2 px-2 rounded-md font-condensed font-bold text-[13px] tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900" id="tab-cliente" onclick="selectRole('cliente')" type="button">
+            <span class="material-symbols-outlined text-[17px]">inventory_2</span>
+            <span>Catálogo Técnico</span>
+          </button>
+        </div>
+
+        <!-- Authentication Form -->
+        <form class="space-y-4" id="industrialLoginForm" onsubmit="handleIndustrialSubmit(event)">
+          <!-- Campo E-mail / Matrícula -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-condensed font-bold text-[13px] tracking-wide text-slate-700 uppercase flex items-center gap-1.5" for="credencialInput">
+                <span class="material-symbols-outlined text-[17px] text-[#19536e]">badge</span>
+                <span id="labelCredencial">MATRÍCULA OPERACIONAL OU E-MAIL</span>
+              </label>
+              <span class="font-mono text-slate-400 text-[11px]" id="hintCredencial">Ex: joao@nocelli.com.br</span>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px] pointer-events-none">fingerprint</span>
+              <input class="w-full h-11 pl-11 pr-10 rounded-lg bg-[#edf3f8] border border-transparent focus:border-[#19536e]/40 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#19536e]/10 text-slate-800 text-sm placeholder:text-slate-400 transition-all font-sans" id="credencialInput" name="credencial" placeholder="Informe seu e-mail funcional..." required type="text" />
+              <span class="material-symbols-outlined absolute right-3 text-emerald-600 text-[19px] hidden" id="credentialCheck">check_circle</span>
+            </div>
+          </div>
+
+          <!-- Campo Senha -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <label class="font-condensed font-bold text-[13px] tracking-wide text-slate-700 uppercase flex items-center gap-1.5" for="senhaInput">
+                <span class="material-symbols-outlined text-[17px] text-[#19536e]">lock</span>
+                <span>SENHA DE ACESSO AO SISTEMA</span>
+              </label>
+              <a class="font-condensed font-bold text-[12px] tracking-wider uppercase text-[#c2410c] hover:underline" href="#recuperar" onclick="alert('Solicitação encaminhada ao TI.'); return false;">ESQUECEU A SENHA?</a>
+            </div>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-slate-400 text-[20px] pointer-events-none">key</span>
+              <input class="w-full h-11 pl-11 pr-11 rounded-lg bg-[#edf3f8] border border-transparent focus:border-[#19536e]/40 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#19536e]/10 text-slate-800 text-sm placeholder:text-slate-400 transition-all font-sans" id="senhaInput" name="senha" placeholder="••••••••••••" required type="password" />
+              <button aria-label="Alternar visibilidade da senha" class="w-9 h-9 absolute right-1 text-slate-400 hover:text-slate-700 transition-colors flex items-center justify-center rounded" onclick="togglePasswordVisibility()" type="button">
+                <span class="material-symbols-outlined text-[20px]" id="passwordToggleIcon">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Opções -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input checked class="w-4 h-4 rounded text-[#19536e] border-slate-300 focus:ring-0 cursor-pointer" id="lembrarDispositivo" type="checkbox" />
+              <span class="text-xs text-slate-600 font-normal">Lembrar terminal neste dispositivo fabril</span>
+            </label>
+            <div class="flex items-center gap-1 text-slate-600">
+              <span class="material-symbols-outlined text-[15px]">nest_clock_farsight_analog</span>
+              <span class="font-condensed font-bold text-[12px] tracking-wider uppercase">SESSÃO: 8 HORAS</span>
+            </div>
+          </div>
+
+          <!-- Botão Submeter -->
+          <button class="w-full h-12 bg-[#19536e] hover:bg-[#133e53] active:bg-[#0f3243] text-white rounded-lg font-condensed font-bold text-[15px] tracking-widest uppercase transition-all shadow-sm flex items-center justify-center gap-2 group mt-2" type="submit">
+            <span>ENTRAR NO SISTEMA NOCELLI</span>
+            <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">login</span>
+          </button>
+        </form>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4 px-2 font-condensed font-semibold text-[11px] tracking-widest uppercase text-slate-500">
+        <span>POLÍTICAS DE ACESSO E SIGILO INDUSTRIAL • LGPD ART. 7</span>
+        <span class="font-mono text-slate-600 font-bold">ID TERMINAL: #NC-FLOOR-04</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="w-full py-4 text-center text-xs text-slate-400">
+    <p>© 2026 Nocelli Indústria e Comércio de Máquinas Ltda. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- Scripts do Login -->
+  <script src="api.js"></script>
+  <script>
+    function togglePasswordVisibility() {
+      const input = document.getElementById('senhaInput');
+      const icon = document.getElementById('passwordToggleIcon');
+      if (!input || !icon) return;
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function selectRole(role) {
+      const tabs = {
+        operador: document.getElementById('tab-operador'),
+        admin: document.getElementById('tab-admin'),
+        cliente: document.getElementById('tab-cliente')
+      };
+
+      const activeClasses = 'flex-1 py-2 px-2 rounded-md font-condensed font-bold text-[13px] tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 bg-[#19536e] text-white shadow-sm';
+      const inactiveClasses = 'flex-1 py-2 px-2 rounded-md font-condensed font-bold text-[13px] tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-slate-900';
+
+      Object.keys(tabs).forEach(key => {
+        if (tabs[key]) tabs[key].className = (key === role) ? activeClasses : inactiveClasses;
+      });
+
+      const label = document.getElementById('labelCredencial');
+      const hint = document.getElementById('hintCredencial');
+      const input = document.getElementById('credencialInput');
+
+      if (role === 'operador') {
+        label.textContent = 'MATRÍCULA OPERACIONAL OU E-MAIL';
+        hint.textContent = 'Ex: joao@nocelli.com.br';
+        input.placeholder = 'Informe seu e-mail funcional...';
+      } else if (role === 'admin') {
+        label.textContent = 'E-MAIL CORPORATIVO DE ADMINISTRADOR';
+        hint.textContent = 'Ex: admin@nocelli.com.br';
+        input.placeholder = 'Informe seu e-mail administrativo...';
+      } else if (role === 'cliente') {
+        label.textContent = 'E-MAIL DE CLIENTE';
+        hint.textContent = 'Ex: cliente@empresa.com';
+        input.placeholder = 'Informe seu e-mail corporativo...';
+      }
+    }
+
+    async function handleIndustrialSubmit(e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const credencial = document.getElementById('credencialInput').value.trim();
+      const senha = document.getElementById('senhaInput').value;
+
+      submitBtn.disabled = true;
+      const originalHtml = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">sync</span><span>AUTENTICANDO...</span>';
+
+      try {
+        const data = await login(credencial, senha);
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span><span>ACESSO AUTORIZADO!</span>';
+        
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 500);
+      } catch (erro) {
+        alert(erro.message || 'Falha ao autenticar.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+      }
+    }
+
+    document.getElementById('credencialInput')?.addEventListener('input', function (e) {
+      const checkIcon = document.getElementById('credentialCheck');
+      if (checkIcon) {
+        if (e.target.value.trim().length >= 4) {
+          checkIcon.classList.remove('hidden');
+        } else {
+          checkIcon.classList.add('hidden');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

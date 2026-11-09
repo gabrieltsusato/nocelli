@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Banco de Imagens Nocelli • Industrial Media Hub</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: "#eff6ff", 100: "#dbeafe", 200: "#bfdbfe", 500: "#3b82f6",
+              600: "#2563eb", 700: "#1d4ed8", 800: "#1e40af", 900: "#1e3a8a", 950: "#0b192c"
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          boxShadow: {
+            'glow': '0 0 24px -4px rgba(37, 99, 235, 0.25)',
+            'subtle': '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04)',
+            'card': '0 4px 20px -2px rgba(15, 23, 42, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { border-color: rgba(226, 232, 240, 0.8); }
+    .dark * { border-color: rgba(51, 65, 85, 0.6); }
+    .glass-nav { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+    .badge-pulse::after {
+      content: ''; position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+      border-radius: 9999px; animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      background-color: inherit; opacity: 0.6; z-index: -1;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.6); opacity: 0; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    ::-webkit-scrollbar { height: 6px; width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 9999px; }
+  </style>
+</head>
+
+<body class="bg-slate-50 dark:bg-[#0B0F17] text-slate-800 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-blue-600 selection:text-white">
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 w-full glass-nav bg-white/85 dark:bg-[#0B0F17]/85 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 shadow-md shadow-blue-600/20 text-white overflow-hidden ring-1 ring-white/20">
+            <span class="material-symbols-outlined text-2xl font-light">precision_manufacturing</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900 dark:text-white">NOCELLI</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold tracking-wider bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/60 dark:border-blue-800/60 uppercase">
+                Media Hub
+              </span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:block">
+              Indústria e Comércio de Máquinas
+            </p>
+          </div>
+        </div>
+
+        <nav class="hidden md:flex items-center bg-slate-100/80 dark:bg-slate-900/90 p-1 rounded-xl border border-slate-200/60 dark:border-slate-800/80">
+          <button class="tab-btn active flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-slate-900 dark:text-white bg-white dark:bg-slate-800 shadow-sm" data-target="view-search" id="tab-search">
+            <span class="material-symbols-outlined text-base">search</span> Buscar imagens
+          </button>
+          <button class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-target="view-upload" id="tab-upload">
+            <span class="material-symbols-outlined text-base">photo_camera</span> Enviar foto
+          </button>
+          <button class="tab-btn flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white relative" data-target="view-approvals" id="tab-approvals">
+            <span class="material-symbols-outlined text-base">verified_user</span> Aprovações
+            <span class="relative inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-mono font-bold leading-none text-white bg-rose-500 rounded-full badge-pulse" id="badge-pending-count">0</span>
+          </button>
+        </nav>
+
+        <div class="flex items-center gap-2.5 sm:gap-3">
+          <div class="flex items-center bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-full px-2.5 py-1 transition-colors">
+            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 text-xs">
+              <span class="material-symbols-outlined text-sm" id="role-avatar-icon">engineering</span>
+            </div>
+            <label class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider pl-1.5 hidden sm:inline" for="role-select">Perfil:</label>
+            <select class="bg-transparent border-none text-xs font-semibold text-slate-800 dark:text-slate-200 py-1 pl-1.5 pr-6 cursor-not-allowed focus:ring-0 leading-tight" id="role-select" disabled>
+              <option value="funcionario">Funcionário</option>
+              <option value="administrador">Administrador</option>
+              <option value="cliente">Cliente</option>
+            </select>
+          </div>
+
+          <button onclick="handleLogout()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm">logout</span> Sair
+          </button>
+
+          <button aria-label="Alternar tema" class="w-9 h-9 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 transition-colors" id="theme-toggle">
+            <span class="material-symbols-outlined text-[19px] dark:hidden">dark_mode</span>
+            <span class="material-symbols-outlined text-[19px] hidden dark:inline text-amber-300">light_mode</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BANNER STATUS -->
+  <div class="border-b border-slate-200/70 dark:border-slate-800/70 bg-white/50 dark:bg-[#0E131F]/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-medium text-slate-700 dark:text-slate-300">Terminal de Galpão Conectado</span>
+      </div>
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium" id="role-display-status">
+        Carregando modo...
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex-1">
+    <!-- TELA 1: BUSCAR IMAGENS -->
+    <section class="view-section active" id="view-search">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 border border-slate-200/90 dark:border-slate-800 shadow-card mb-6">
+        <div class="flex flex-col md:flex-row items-stretch gap-2.5">
+          <div class="relative flex-1 flex items-center">
+            <span class="absolute left-3.5 text-slate-400 dark:text-slate-500 material-symbols-outlined text-xl pointer-events-none">search</span>
+            <input class="w-full h-11 pl-11 pr-14 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 outline-none" id="input-search-term" placeholder="Buscar por máquina, categoria, código ou tag..." type="text" />
+            <span class="absolute right-3 hidden sm:flex items-center px-1.5 py-0.5 rounded text-[11px] font-mono font-semibold bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400">⌘K</span>
+          </div>
+          <div class="w-full md:w-52">
+            <select class="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-sm font-medium text-slate-800 dark:text-slate-200 cursor-pointer" id="select-criteria">
+              <option value="todos">Todos os campos</option>
+              <option value="nome">Nome da Máquina</option>
+              <option value="categoria">Categoria</option>
+              <option value="codigo">Código / Patrimônio</option>
+              <option value="tag">Tags técnicas</option>
+            </select>
+          </div>
+          <button class="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm flex items-center justify-center gap-2 transition-all" id="btn-trigger-search" type="button">
+            <span class="material-symbols-outlined text-lg">tune</span>
+            <span>Filtrar</span>
+          </button>
+        </div>
+        <div class="flex items-center gap-1.5 overflow-x-auto pt-3 mt-3 border-t border-slate-100 dark:border-slate-800/70 text-xs">
+          <span class="text-slate-400 dark:text-slate-500 font-medium pl-1 text-[11px] uppercase tracking-wider hidden sm:inline">Filtros rápidos:</span>
+          <button class="quick-pill px-3 py-1 rounded-lg font-medium bg-slate-900 text-white dark:bg-blue-600 dark:text-white transition-colors" onclick="quickFilter('')" type="button">Todas as Máquinas</button>
+          <button class="quick-pill px-3 py-1 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors" onclick="quickFilter('Prensas')" type="button">Prensas</button>
+          <button class="quick-pill px-3 py-1 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors" onclick="quickFilter('Tornos CNC')" type="button">Tornos CNC</button>
+          <button class="quick-pill px-3 py-1 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors" onclick="quickFilter('Fresadoras')" type="button">Fresadoras</button>
+          <button class="quick-pill px-3 py-1 rounded-lg font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors" onclick="quickFilter('Serras de Fita')" type="button">Serras de Fita</button>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-5 px-1">
+        <div class="flex items-center gap-2.5">
+          <h2 class="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider font-display">Acervo Ativo</h2>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 border border-blue-200" id="results-count-badge">
+            0 equipamentos listados
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="catalog-grid"></div>
+
+      <div class="hidden flex-col items-center justify-center p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 my-6" id="search-empty-state">
+        <span class="material-symbols-outlined text-3xl text-blue-600 mb-2">search_off</span>
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white mb-1">Nenhum equipamento localizado</h3>
+        <button class="mt-3 px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 text-white text-xs font-semibold" onclick="clearSearchFilter()" type="button">Redefinir Busca</button>
+      </div>
+    </section>
+
+    <!-- TELA 2: ENVIAR FOTO -->
+    <section class="view-section hidden" id="view-upload">
+      <div class="max-w-2xl mx-auto bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 p-6 sm:p-8 shadow-card">
+        <div class="mb-6 pb-5 border-b border-slate-100 dark:border-slate-800/80">
+          <h2 class="text-lg font-display font-bold text-slate-900 dark:text-white">Envio de Ativo Técnico</h2>
+        </div>
+        <div class="flex items-center gap-3 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-800 dark:text-amber-300 text-xs mb-6" id="upload-role-notice">
+          <span class="material-symbols-outlined text-lg">info</span>
+          <span id="upload-help-text">A foto ficará pendente de validação até um administrador aprovar.</span>
+        </div>
+        <form class="space-y-4" id="upload-machine-form" onsubmit="handleUploadSubmit(event)">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Fotografia <span class="text-rose-500">*</span></label>
+            <div class="relative border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-blue-500 rounded-2xl p-6 text-center bg-slate-50/70 dark:bg-slate-800/40 cursor-pointer">
+              <input accept="image/*" capture="environment" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="machine-photo-file" onchange="previewUploadImage(event)" required type="file" />
+              <div class="flex flex-col items-center justify-center pointer-events-none">
+                <span class="material-symbols-outlined text-3xl text-blue-600 mb-2">photo_camera</span>
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">Tirar foto ou selecionar arquivo (.jpg, .png)</p>
+              </div>
+            </div>
+            <div class="hidden mt-3 relative rounded-xl overflow-hidden aspect-[4/3] max-w-sm mx-auto border bg-slate-950" id="image-preview-wrapper">
+              <img alt="Pré-visualização" class="w-full h-full object-cover" id="image-preview-img" src="" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5" for="input-machine-name">Nome da Máquina *</label>
+              <input class="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white outline-none" id="input-machine-name" required type="text" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5" for="select-machine-category">Categoria *</label>
+              <select class="w-full h-11 px-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white outline-none" id="select-machine-category" required>
+                <option value="Prensas">Prensas</option>
+                <option value="Tornos CNC">Tornos CNC</option>
+                <option value="Fresadoras">Fresadoras</option>
+                <option value="Serras de Fita">Serras de Fita</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5" for="input-machine-code">Número de Série / TAG *</label>
+              <input class="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white outline-none" id="input-machine-code" required type="text" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5" for="input-machine-tags">Tags Técnicas / Descrição</label>
+              <input class="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white outline-none" id="input-machine-tags" type="text" />
+            </div>
+          </div>
+          <div class="pt-4">
+            <button class="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm flex items-center justify-center gap-2" type="submit">
+              <span class="material-symbols-outlined text-lg">cloud_upload</span>
+              <span>Enviar Imagem ao Servidor</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TELA 3: APROVAÇÕES -->
+    <section class="view-section hidden" id="view-approvals">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6 px-1">
+        <h2 class="text-lg font-display font-bold text-slate-900 dark:text-white">Painel de Moderação Técnica</h2>
+        <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-amber-50 text-amber-700 border border-amber-200" id="approvals-counter-tag">0 Pendentes</span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="pending-grid"></div>
+      <div class="hidden flex-col items-center justify-center p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 my-6" id="approvals-empty-state">
+        <span class="material-symbols-outlined text-3xl text-emerald-500 mb-2">task_alt</span>
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white">Nenhuma foto pendente</h3>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md" id="lightbox-modal" onclick="closeLightbox()">
+    <div class="relative w-full max-w-4xl bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-slate-950/50">
+        <div class="flex items-center gap-3">
+          <h3 class="text-sm font-semibold text-white" id="lightbox-caption">Visualização</h3>
+          <span class="px-2 py-0.5 rounded font-mono text-[11px] text-slate-400 bg-slate-800" id="lightbox-code">--</span>
+        </div>
+        <button class="text-slate-400 hover:text-white" onclick="closeLightbox()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="relative w-full max-h-[72vh] flex items-center justify-center bg-black/90 p-4">
+        <img alt="Equipamento" class="max-h-[68vh] w-auto max-w-full object-contain rounded-lg" id="lightbox-img" src="" />
+      </div>
+    </div>
+  </div>
+
+  <aside class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 pointer-events-none" id="toast-container"></aside>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-[#0B0F17] py-6 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+      <p>© 2026 NOCELLI • Indústria e Comércio de Máquinas Ltda.</p>
+    </div>
+  </footer>
+
+  <!-- 1. IMPORTAÇÃO DAS FUNÇÕES DA API -->
+  <script src="api.js"></script>
+
+  <!-- 2. LÓGICA DE INTEGRAÇÃO COM O BACKEND -->
+  <script>
+    const token = localStorage.getItem('nocelli_token');
+    const userStr = localStorage.getItem('nocelli_user');
+
+    if (!token || !userStr) {
+      window.location.href = 'login.html';
+    }
+
+    const currentUser = JSON.parse(userStr || '{}');
+    let currentRole = currentUser.role ? currentUser.role.toLowerCase() : 'funcionario';
+
+    const roleSelect = document.getElementById('role-select');
+    const tabSearch = document.getElementById('tab-search');
+    const tabUpload = document.getElementById('tab-upload');
+    const tabApprovals = document.getElementById('tab-approvals');
+    const badgePending = document.getElementById('badge-pending-count');
+    const roleNotice = document.getElementById('role-display-status');
+    const uploadRoleNotice = document.getElementById('upload-role-notice');
+    const uploadHelpText = document.getElementById('upload-help-text');
+    const roleAvatarIcon = document.getElementById('role-avatar-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (roleSelect) {
+      roleSelect.value = (currentRole === 'admin' || currentRole === 'administrador') ? 'administrador' : currentRole;
+    }
+
+    function handleLogout() {
+      logout();
+      window.location.href = 'login.html';
+    }
+
+    function applyRolePermissions(role) {
+      if (role === 'cliente') {
+        if (tabUpload) tabUpload.style.display = 'none';
+        if (tabApprovals) tabApprovals.style.display = 'none';
+        if (roleAvatarIcon) roleAvatarIcon.textContent = 'person';
+        switchTab('view-search');
+        if (roleNotice) roleNotice.innerHTML = 'Modo: <strong class="text-blue-600 font-semibold">Cliente</strong> (Consulta de Fotos Homologadas)';
+
+      } else if (role === 'funcionario') {
+        if (tabUpload) tabUpload.style.display = 'inline-flex';
+        if (tabApprovals) tabApprovals.style.display = 'none';
+        if (roleAvatarIcon) roleAvatarIcon.textContent = 'engineering';
+        if (uploadRoleNotice) uploadRoleNotice.className = 'flex items-center gap-3 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-800 text-xs mb-6';
+        if (uploadHelpText) uploadHelpText.textContent = 'A foto ficará pendente de validação até um administrador aprovar.';
+        if (roleNotice) roleNotice.innerHTML = 'Modo: <strong class="text-blue-600 font-semibold">Funcionário</strong> (Envio de Ativos Fabris)';
+
+      } else if (role === 'administrador' || role === 'admin') {
+        if (tabUpload) tabUpload.style.display = 'inline-flex';
+        if (tabApprovals) tabApprovals.style.display = 'inline-flex';
+        if (roleAvatarIcon) roleAvatarIcon.textContent = 'admin_panel_settings';
+        if (uploadRoleNotice) uploadRoleNotice.className = 'flex items-center gap-3 p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 text-emerald-800 text-xs mb-6';
+        if (uploadHelpText) uploadHelpText.textContent = 'Como administrador, você pode gerenciar e moderar os uploads.';
+        if (roleNotice) roleNotice.innerHTML = 'Modo: <strong class="text-blue-600 font-semibold">Administrador</strong> (Moderação + Gestão Total)';
+      }
+    }
+
+    // CARREGAR E RENDERIZAR MÁQUINAS DO BACKEND EXPRESS
+    async function carregarMaquinasDoBackend() {
+      try {
+        const maquinas = await listarMaquinas();
+        renderizarMaquinas(maquinas);
+      } catch (err) {
+        showToast(err.message || 'Erro ao carregar máquinas do servidor', 'error');
+      }
+    }
+
+    function renderizarMaquinas(maquinas) {
+      const catalogGrid = document.getElementById('catalog-grid');
+      const pendingGrid = document.getElementById('pending-grid');
+      if (!catalogGrid || !pendingGrid) return;
+
+      catalogGrid.innerHTML = '';
+      pendingGrid.innerHTML = '';
+
+      let pendentesCount = 0;
+      let catalogCount = 0;
+
+      maquinas.forEach(m => {
+        const isPendente = m.status === 'PENDENTE';
+        const isAprovado = m.status === 'APROVADO';
+
+        if (isPendente) pendentesCount++;
+
+        // 1. Renderiza no catálogo público/geral
+        if (isAprovado || (currentRole !== 'cliente' && isPendente)) {
+          catalogCount++;
+          const card = document.createElement('article');
+          card.className = 'machine-card group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 overflow-hidden shadow-subtle flex flex-col';
+          card.dataset.name = m.modelo;
+          card.dataset.code = m.numeroSerie;
+          card.dataset.tags = m.descricao;
+          card.dataset.status = m.status.toLowerCase();
+
+          const statusBadgeHtml = isAprovado
+            ? `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Aprovada</span>`
+            : `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span> Pendente</span>`;
+
+          card.innerHTML = `
+            <div class="relative w-full aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer" onclick="openLightbox('${m.fotoUrl}', '${m.modelo}', '${m.numeroSerie}')">
+              <img src="${m.fotoUrl}" alt="${m.modelo}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-2">
+                  <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white leading-tight">${m.modelo}</h3>
+                  <span class="font-mono text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">${m.numeroSerie}</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">${m.descricao || 'Sem descrição'}</p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+                ${statusBadgeHtml}
+                <span class="text-[11px] text-slate-400">Por: ${m.responsavelUploadNome || 'Usuário'}</span>
+              </div>
+            </div>
+          `;
+          catalogGrid.appendChild(card);
+        }
+
+        // 2. Renderiza no painel de moderação de administradores
+        if (isPendente && (currentRole === 'administrador' || currentRole === 'admin')) {
+          const approvalCard = document.createElement('article');
+          approvalCard.className = 'machine-card group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 overflow-hidden shadow-subtle flex flex-col';
+          approvalCard.innerHTML = `
+            <div class="relative w-full aspect-[4/3] bg-slate-950 overflow-hidden cursor-pointer" onclick="openLightbox('${m.fotoUrl}', '${m.modelo}', '${m.numeroSerie}')">
+              <img src="${m.fotoUrl}" alt="${m.modelo}" class="w-full h-full object-cover">
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-2">
+                  <h3 class="font-display font-bold text-sm text-slate-900 dark:text-white">${m.modelo}</h3>
+                  <span class="font-mono text-[11px] font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">${m.numeroSerie}</span>
+                </div>
+                <div class="text-[11px] text-slate-400 mb-3">Enviado por: <strong class="text-slate-700 dark:text-slate-300">${m.responsavelUploadNome || 'Funcionário'}</strong></div>
+              </div>
+              <div class="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <button type="button" onclick="aprovarItem(${m.id}, '${m.modelo}')" class="h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center justify-center gap-1 transition-all">
+                  <span class="material-symbols-outlined text-sm">check</span> Aprovar
+                </button>
+                <button type="button" onclick="rejeitarItem(${m.id}, '${m.modelo}')" class="h-9 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-rose-50 text-slate-700 dark:text-slate-300 hover:text-rose-600 border text-xs font-semibold flex items-center justify-center gap-1 transition-all">
+                  <span class="material-symbols-outlined text-sm">close</span> Rejeitar
+                </button>
+              </div>
+            </div>
+          `;
+          pendingGrid.appendChild(approvalCard);
+        }
+      });
+
+      // Atualiza badges
+      if (badgePending) badgePending.textContent = pendentesCount;
+      const counterTag = document.getElementById('approvals-counter-tag');
+      if (counterTag) counterTag.textContent = `${pendentesCount} Pendente(s)`;
+
+      const resultsBadge = document.getElementById('results-count-badge');
+      if (resultsBadge) resultsBadge.textContent = `${catalogCount} equipamento(s) listado(s)`;
+
+      const emptyPending = document.getElementById('approvals-empty-state');
+      if (emptyPending) {
+        if (pendentesCount === 0) {
+          emptyPending.classList.remove('hidden');
+          emptyPending.classList.add('flex');
+        } else {
+          emptyPending.classList.add('hidden');
+          emptyPending.classList.remove('flex');
+        }
+      }
+    }
+
+    // SUBMIT REAL DO FORMULÁRIO ENVIANDO PARA O MULTER/EXPRESS
+    async function handleUploadSubmit(event) {
+      event.preventDefault();
+
+      const modelo = document.getElementById('input-machine-name').value.trim();
+      const numeroSerie = document.getElementById('input-machine-code').value.trim();
+      const categoria = document.getElementById('select-machine-category').value;
+      const tags = document.getElementById('input-machine-tags').value.trim();
+      const photoFile = document.getElementById('machine-photo-file').files[0];
+
+      if (!photoFile) {
+        showToast('Selecione ou tire uma foto do equipamento.', 'error');
+        return;
+      }
+
+      const descricao = `Categoria: ${categoria}${tags ? ` | Tags: ${tags}` : ''}`;
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const resultado = await cadastrarMaquina(modelo, numeroSerie, descricao, photoFile);
+        showToast(resultado.mensagem || 'Foto enviada com sucesso!', 'success');
+        event.target.reset();
+
+        const previewWrapper = document.getElementById('image-preview-wrapper');
+        if (previewWrapper) previewWrapper.classList.add('hidden');
+
+        await carregarMaquinasDoBackend();
+        switchTab('view-search');
+      } catch (err) {
+        showToast(err.message || 'Erro ao realizar upload da foto.', 'error');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    }
+
+    // AÇÕES DE MODERAÇÃO DO ADMINISTRADOR
+    async function aprovarItem(id, modelo) {
+      try {
+        await alterarStatusMaquina(id, 'APROVADO');
+        showToast(`Equipamento homologado: ${modelo}`, 'success');
+        await carregarMaquinasDoBackend();
+      } catch (err) {
+        showToast(err.message || 'Erro ao aprovar.', 'error');
+      }
+    }
+
+    async function rejeitarItem(id, modelo) {
+      try {
+        await alterarStatusMaquina(id, 'REJEITADO', 'Foto inadequada');
+        showToast(`Foto rejeitada: ${modelo}`, 'error');
+        await carregarMaquinasDoBackend();
+      } catch (err) {
+        showToast(err.message || 'Erro ao rejeitar.', 'error');
+      }
+    }
+
+    // PREVIEW DE FOTO
+    function previewUploadImage(event) {
+      const file = event.target.files[0];
+      const previewWrapper = document.getElementById('image-preview-wrapper');
+      const previewImg = document.getElementById('image-preview-img');
+
+      if (file && previewWrapper && previewImg) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImg.src = e.target.result;
+          previewWrapper.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // CONTROLES DE NAVEGAÇÃO E TEMA
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetViewId = btn.getAttribute('data-target');
+        switchTab(targetViewId);
+      });
+    });
+
+    function switchTab(viewId) {
+      document.querySelectorAll('.view-section').forEach(view => {
+        view.classList.add('hidden');
+        view.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(tab => {
+        tab.classList.remove('active', 'text-slate-900', 'dark:text-white', 'bg-white', 'dark:bg-slate-800', 'shadow-sm');
+        tab.classList.add('text-slate-500', 'dark:text-slate-400');
+      });
+
+      const targetView = document.getElementById(viewId);
+      const activeTabs = document.querySelectorAll(`.tab-btn[data-target="${viewId}"]`);
+
+      if (targetView) {
+        targetView.classList.remove('hidden');
+        targetView.classList.add('active');
+      }
+
+      activeTabs.forEach(t => {
+        t.classList.add('active', 'text-slate-900', 'dark:text-white', 'bg-white', 'dark:bg-slate-800', 'shadow-sm');
+        t.classList.remove('text-slate-500', 'dark:text-slate-400');
+      });
+    }
+
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxCode = document.getElementById('lightbox-code');
+
+    function openLightbox(imageUrl, title, code) {
+      if (lightboxImg) lightboxImg.src = imageUrl;
+      if (lightboxCaption) lightboxCaption.textContent = title;
+      if (lightboxCode) lightboxCode.textContent = code;
+      if (lightboxModal) {
+        lightboxModal.classList.remove('hidden');
+        lightboxModal.classList.add('flex');
+      }
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      if (lightboxModal) {
+        lightboxModal.classList.add('hidden');
+        lightboxModal.classList.remove('flex');
+      }
+      document.body.style.overflow = '';
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      let borderColors = 'border-blue-500 bg-slate-900/95 text-white';
+      if (type === 'success') borderColors = 'border-emerald-500 bg-slate-900/95 text-white';
+      if (type === 'error') borderColors = 'border-rose-500 bg-slate-900/95 text-white';
+
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-2xl text-xs font-medium ${borderColors}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', () => {
+        const html = document.documentElement;
+        if (html.classList.contains('dark')) {
+          html.classList.remove('dark');
+          html.classList.add('light');
+        } else {
+          html.classList.remove('light');
+          html.classList.add('dark');
+        }
+      });
+    }
+
+    // INICIALIZAÇÃO
+    applyRolePermissions(currentRole);
+    carregarMaquinasDoBackend();
+  </script>
+</body>
+</html>
