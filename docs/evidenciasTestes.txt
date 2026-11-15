@@ -1,0 +1,67 @@
+Evidência de execução automatizada
+Projeto: Nocelli Media Hub
+Comando: npm test
+Executado em: 2026-11-15 17:56:45 -03:00
+
+
+> nocelli-backend@1.0.0 test
+> node --test
+
+TAP version 13
+# Subtest: login valida credenciais e retorna token e usuário
+ok 1 - login valida credenciais e retorna token e usuário
+  ---
+  duration_ms: 180.5474
+  type: 'test'
+  ...
+# Subtest: rotas protegidas exigem token e respeitam o perfil
+ok 2 - rotas protegidas exigem token e respeitam o perfil
+  ---
+  duration_ms: 84.9752
+  type: 'test'
+  ...
+# Subtest: Strategy de imagem aceita formatos permitidos e rejeita outros
+ok 3 - Strategy de imagem aceita formatos permitidos e rejeita outros
+  ---
+  duration_ms: 57.1923
+  type: 'test'
+  ...
+# Subtest: Singleton entrega a mesma instância do repositório
+ok 4 - Singleton entrega a mesma instância do repositório
+  ---
+  duration_ms: 54.4932
+  type: 'test'
+  ...
+# Subtest: Factory cria máquina pendente com responsável e o cliente só vê após aprovação
+ok 5 - Factory cria máquina pendente com responsável e o cliente só vê após aprovação
+  ---
+  duration_ms: 143.7934
+  type: 'test'
+  ...
+# Subtest: filtros inválidos são rejeitados e filtros válidos encontram registros
+ok 6 - filtros inválidos são rejeitados e filtros válidos encontram registros
+  ---
+  duration_ms: 82.0433
+  type: 'test'
+  ...
+# Subtest: exclusão lógica remove a máquina da lista e atualiza o relatório
+ok 7 - exclusão lógica remove a máquina da lista e atualiza o relatório
+  ---
+  duration_ms: 112.1064
+  type: 'test'
+  ...
+# Subtest: Factory mantém a convenção do domínio ao criar um objeto de máquina
+ok 8 - Factory mantém a convenção do domínio ao criar um objeto de máquina
+  ---
+  duration_ms: 53.3238
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1291.7531
