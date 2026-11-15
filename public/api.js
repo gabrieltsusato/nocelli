@@ -1,90 +1,86 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = window.NOCELLI_API_URL || `${window.location.origin}/api`;
 
-// Helper para obter o token armazenado
-function getToken() {
-  return localStorage.getItem('nocelli_token');
-}
+async function requestApi(path, options = {}) {
+  const headers = new Headers(options.headers || {});
+  const token = getToken();
 
-// 1. Autenticação (Login)
-async function login(email, senha) {
-  const response = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, senha })
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.mensagem || 'Erro ao realizar login.');
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
   }
 
-  // Guarda o Token e os dados do utilizador no localStorage
-  localStorage.setItem('nocelli_token', data.token);
-  localStorage.setItem('nocelli_user', JSON.stringify(data.usuario));
+  if (options.body && !(options.body instanceof FormData)) {
+    headers.set('Content-Type', 'application/json');
+  }
+
+  const response = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const contentType = response.headers.get('content-type') || '';
+  const data = contentType.includes('application/json')
+    ? await response.json()
+    : null;
+
+  if (!response.ok) {
+    const message = data?.mensagem || `Falha na comunicação com o servidor (${response.status}).`;
+
+    if (response.status === 403 && message === 'Token inválido ou expirado.') {
+      logout();
+      if (!window.location.pathname.endsWith('/login.html')) {
+        window.location.replace('login.html');
+      }
+    }
+
+    throw new Error(message);
+  }
 
   return data;
 }
 
-// 2. Upload de Máquina com Foto (multipart/form-data)
+function getToken() {
+  return localStorage.getItem('nocelli_token');
+}
+
+async function login(email, senha) {
+  const data = await requestApi('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, senha })
+  });
+
+  if (!data?.token || !data?.usuario) {
+    throw new Error('O servidor retornou uma resposta de login inválida.');
+  }
+
+  localStorage.setItem('nocelli_token', data.token);
+  localStorage.setItem('nocelli_user', JSON.stringify(data.usuario));
+  return data;
+}
+
 async function cadastrarMaquina(modelo, numeroSerie, descricao, ficheiroImagem) {
   const formData = new FormData();
   formData.append('modelo', modelo);
   formData.append('numeroSerie', numeroSerie);
   formData.append('descricao', descricao);
-  formData.append('foto', ficheiroImagem); // O nome 'foto' deve coincidir com o multer no backend
+  formData.append('foto', ficheiroImagem);
 
-  const response = await fetch(`${API_URL}/maquinas`, {
+  return requestApi('/maquinas', {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`
-      // Nota: Não defina 'Content-Type' manualmente ao enviar FormData; o browser define o boundary automaticamente.
-    },
     body: formData
   });
-
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.mensagem);
-  return data;
 }
 
-// 3. Listar Máquinas (com filtros opcionais)
 async function listarMaquinas(filtros = {}) {
-  const params = new URLSearchParams(filtros).toString();
-  const url = `${API_URL}/maquinas${params ? `?${params}` : ''}`;
-
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
-    }
-  });
-
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.mensagem);
-  return data;
+  const params = new URLSearchParams(
+    Object.entries(filtros).filter(([, value]) => value !== undefined && value !== '')
+  );
+  const query = params.toString();
+  return requestApi(`/maquinas${query ? `?${query}` : ''}`);
 }
 
-// 4. Painel de Aprovação (Apenas Administrador)
 async function alterarStatusMaquina(id, status, motivoRejeicao = '') {
-  const response = await fetch(`${API_URL}/maquinas/${id}/status`, {
+  return requestApi(`/maquinas/${encodeURIComponent(id)}/status`, {
     method: 'PATCH',
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-      'Content-Type': 'application/json'
-    },
     body: JSON.stringify({ status, motivoRejeicao })
   });
-
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.mensagem);
-  return data;
 }
 
-// 5. Encerrar Sessão (Logout)
 function logout() {
   localStorage.removeItem('nocelli_token');
   localStorage.removeItem('nocelli_user');
